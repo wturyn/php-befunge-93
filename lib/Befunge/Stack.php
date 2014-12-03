@@ -43,9 +43,15 @@ class Stack
 
     /**
      * @param $value
+     * @throws \Exception
      */
     public function push($value)
     {
-        $this->stack[] = $value;
+        if (!is_int($value)) {
+            throw new \Exception("Stack accepts integer values only");
+        } else {
+            $this->stack[] = $value;
+        }
+
     }
 } 

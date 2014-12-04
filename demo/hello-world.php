@@ -1,7 +1,7 @@
 <?php
-use Befunge\Lang;
-
 require ('../vendor/autoload.php');
+
+use Befunge\Lang;
 
 $program = <<< 'EOD'
 >              v

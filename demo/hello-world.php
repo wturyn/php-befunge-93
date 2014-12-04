@@ -13,5 +13,5 @@ EOD;
 
 $lang = new Lang();
 $lang->fromString($program);
-$lang->run();
+echo($lang->run());
 

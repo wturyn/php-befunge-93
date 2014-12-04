@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: wt
- * Date: 27.11.14
- * Time: 22:07
- */
 
 namespace Befunge;
-
 
 /**
  * Class Stack
@@ -43,6 +36,7 @@ class Stack
 
     /**
      * @param $value
+     *
      * @throws \Exception
      */
     public function push($value)

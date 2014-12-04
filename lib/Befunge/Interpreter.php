@@ -2,35 +2,88 @@
 
 namespace Befunge;
 
+/**
+ * Class Interpreter
+ * @package Befunge
+ */
 class Interpreter
 {
+    /**
+     * @var array
+     */
     protected $up = array(0, -1);
+    /**
+     * @var array
+     */
     protected $down = array(0, 1);
+    /**
+     * @var array
+     */
     protected $left = array(-1, 0);
+    /**
+     * @var array
+     */
     protected $right = array(1, 0);
+    /**
+     * @var array
+     */
     protected $directions;
+    /**
+     * @var null
+     */
     protected $currentDirection = null;
+    /**
+     * @var bool
+     */
     protected $finished = false;
+    /**
+     * @var bool
+     */
     protected $asciiMode = false;
+    /**
+     * @var int
+     */
     protected $x = 0;
+    /**
+     * @var int
+     */
     protected $y = 0;
+    /**
+     * @var array
+     */
     protected $output = array();
     /* @var Stack */
     protected $stack;
+    /**
+     * @var
+     */
     protected $source;
+    /**
+     * @var
+     */
     protected $runningSource;
 
 
+    /**
+     *
+     */
     public function __construct()
     {
         $this->directions = array($this->up, $this->down, $this->left, $this->right);
     }
 
+    /**
+     * @param $source
+     */
     public function setSource($source)
     {
         $this->source = $source;
     }
 
+    /**
+     * @return array
+     * @throws \Exception
+     */
     public function run()
     {
         $this->stack = new Stack();
@@ -40,43 +93,56 @@ class Interpreter
         $this->runningSource = $this->source;
         $this->finished = false;
         $this->asciiMode = false;
-        $this->currentDirection = null;
+        $this->currentDirection = $this->right;
         while (!$this->finished) {
+            //read cell
             $cell = $this->runningSource[$this->y][$this->x];
+
+            //switch ascii mode
             if ($cell === '"') {
                 $this->asciiMode = !$this->asciiMode;
             }
+
             if ($this->asciiMode) {
                 $this->stack->push(ord($cell));
             } else {
                 $this->cmd($cell);
             }
-            if (is_null($this->currentDirection)) {
-                throw new \Exception("First command should set the direction");
-            } else {
-                $this->move();
-            }
+            $this->move();
         }
 
-        return $this->output;
+        return implode($this->output);
     }
 
+    /**
+     *
+     */
     protected function move()
     {
         $this->x += $this->currentDirection[0];
         if ($this->x < 0) {
             $this->x = strlen($this->source[$this->y]) - 1;
-        } else if ($this->x == strlen($this->source[$this->y])) {
-            $this->x = 0;
+        } else {
+            if ($this->x == strlen($this->source[$this->y])) {
+                $this->x = 0;
+            }
         }
+
         $this->y += $this->currentDirection[1];
         if ($this->y < 0) {
             $this->y = count($this->source) - 1;
-        } else if ($this->y == count($this->source)) {
-            $this->y = 0;
+        } else {
+            if ($this->y == count($this->source)) {
+                $this->y = 0;
+            }
         }
     }
 
+    /**
+     * @param $cell
+     *
+     * @throws \Exception
+     */
     protected function cmd($cell)
     {
         //0..9 - Push this digit on the stack

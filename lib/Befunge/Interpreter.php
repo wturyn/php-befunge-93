@@ -205,6 +205,7 @@ class Interpreter
             case '*':
                 $this->stack->push($this->stack->pop() * $this->stack->pop());
                 break;
+
             //integer division
             case '/':
                 $a = $this->stack->pop();
@@ -285,6 +286,30 @@ class Interpreter
                 $y = $this->stack->pop();
                 $x = $this->stack->pop();
                 $this->stack->push($this->runningSource[$y][$x]);
+                break;
+
+            //Ask user for a number and push it
+            case '&':
+                if (php_sapi_name() == 'cli') {
+                    $handle = fopen("php://stdin", "r");
+                    $number = intval(fgets($handle));
+                    $this->stack->push($number);
+                    fclose($handle);
+                } else {
+                    throw new \Exception("Input commands are available in command-line mode only");
+                }
+                break;
+
+            //Ask user for a character and push its ASCII value
+            case '~':
+                if (php_sapi_name() == 'cli') {
+                    $handle = fopen("php://stdin", "r");
+                    $char = fgetc($handle);
+                    $this->stack->push(ord($char));
+                    fclose($handle);
+                } else {
+                    throw new \Exception("Input commands are available in command-line mode only");
+                }
                 break;
         }
     }

@@ -78,7 +78,7 @@ class Lang
         if (is_null($this->source)) {
             throw new \Exception("No source set");
         } else {
-            return implode($this->interpreter->run());
+            return $this->interpreter->run();
         }
     }
 

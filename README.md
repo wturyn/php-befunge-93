@@ -1,7 +1,7 @@
 php-befunge-93
 ==============
 
-Befunge-93 interpreter written in PHP
+[Befunge-93](http://en.wikipedia.org/wiki/Befunge) interpreter written in PHP
 
 Example (from /demo/hello-word.php)
 ------
